@@ -25,6 +25,13 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(self.base_1, "updated_at"))
         self.assertTrue(hasattr(self.base_1, "id"))
 
+    def test_custom_attributes(self):
+        """Tests BaseModel with custom attributes"""
+        self.base_1.number = 38000000000
+        self.base_1.money = "Thirty Eight Billion Dollars"
+        self.assertCountEqual(self.base_1.money, 'Thirty Eight Billion Dollars')
+        self.assertEqual(self.base_1.number, 38000000000)
+
     def test_attribute_types(self):
         """Tests the class types of BaseModel attributes"""
         self.assertIsInstance(self.base_1.id, str)
@@ -48,9 +55,14 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict_method(self):
         """Tests the to_dict method is as expected"""
-        new_dict = self.base_1.to_dict()
+
+        # Check if all existing keys are passed accordingly
+        dict_instance = self.base_1.__dict__
+        for key in dict_instance:
+            self.assertIn(key, self.base_1.to_dict())
 
         # Check if __class__ is added and assigned accordingly
+        new_dict = self.base_1.to_dict()
         self.assertEqual(new_dict['__class__'], self.base_1.__class__.__name__)
 
         # Check if datetime objects were converted to strings
