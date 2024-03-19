@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """A class to store dict representation of an object in a json file"""
 import json
-#from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -34,9 +33,13 @@ class FileStorage:
 
 	def reload(self):
 		"""Deserializes a json file"""
+		from models.base_model import BaseModel
 
 		try:
 			with open(FileStorage.__file_path, 'r', encoding='utf-8') as jf:
-				FileStorage.__objects = json.loads(jf.read())
+				dict_obj = json.loads(jf.read())
+				for key, value in dict_obj.items():
+					obj = BaseModel(**dict_obj[key])
+					FileStorage.__objects[key] = obj
 		except FileNotFoundError:
 			pass
