@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """A class to store dict representation of an object in a json file"""
 import json
-from models.base_model import BaseModel
+#from models.base_model import BaseModel
 
 
 class FileStorage:
