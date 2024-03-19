@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """A class to store dict representation of an object in a json file"""
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -8,7 +9,7 @@ class FileStorage:
 
 	__file_path = "file.json"
 	__objects = {}
-	
+
 
 	def all(self):
 		"""Returns the dict '__objects'"""
@@ -22,7 +23,7 @@ class FileStorage:
 
 	def save(self):
 		"""Serializes the obj to json and saves to a file"""
-	
+
 		obj_dict = {}
 		for key, value in FileStorage.__objects.items():
 			obj_dict[key] = value.to_dict()
@@ -33,8 +34,6 @@ class FileStorage:
 
 	def reload(self):
 		"""Deserializes a json file"""
-		from models.base_model import BaseModel
-
 		try:
 			with open(FileStorage.__file_path, 'r', encoding='utf-8') as jf:
 				dict_obj = json.loads(jf.read())
