@@ -68,3 +68,17 @@ class TestBaseModel(unittest.TestCase):
         # Check if datetime objects were converted to strings
         self.assertIsInstance(new_dict['created_at'], str)
         self.assertIsInstance(new_dict['updated_at'], str)
+
+    def test_keyworded_args_not_empty(self):
+        """Tests for when **kwargs is not empty"""
+        test_dict = self.base_1.to_dict()
+        base_4 = BaseModel(**test_dict)
+        self.assertEqual(test_dict, base_4.to_dict())
+
+    def test_empty_keyworded_args(self):
+        """Tests if empty dictionary is passed to kwargs"""
+        empty_dict = {}
+        base_5 = BaseModel(**empty_dict)
+        self.assertIn('id', base_5.__dict__)
+        self.assertIn('created_at', base_5.__dict__)
+        self.assertIn('updated_at', base_5.__dict__)
