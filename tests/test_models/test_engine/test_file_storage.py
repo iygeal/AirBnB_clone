@@ -2,6 +2,7 @@
 """Module to test FileStorage"""
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models import storage
 import unittest
 import os
 import json
@@ -63,3 +64,16 @@ class TestFileStorage(unittest.TestCase):
 
         # Check that IDs in __objects are unique
         self.assertNotEqual(new_obj.id, new_obj_2.id)
+
+    def test_reload_method(self):
+        """Tests the behaviour of the reload() method"""
+        base_3 = BaseModel()
+        base_3.save()
+        storage.reload()
+        self.assertIn(f"{base_3.__class__.__name__}.{base_3.id}",
+                      FileStorage._FileStorage__objects.keys())
+
+    def test_all_method(self):
+        """Test the behaviour of all() method"""
+        objects = self.obj_1.all()
+        self.assertEqual(objects, FileStorage._FileStorage__objects)
