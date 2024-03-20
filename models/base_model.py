@@ -44,7 +44,7 @@ class BaseModel:
         """Returns a dict with all keys/values of dict of obj"""
 
         # Make a copy of the instance dictionary
-        obj_dict = self.__dict__.copy() # dict(self.__dict__)
+        obj_dict = self.__dict__.copy()  # dict(self.__dict__)
 
         # Iterate through the key-value pairs and format datetime to isoformat
         for key, value in obj_dict.items():

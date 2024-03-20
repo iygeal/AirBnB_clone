@@ -3,6 +3,7 @@
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 import unittest
+import os
 
 
 class TestFileStorage(unittest.TestCase):
@@ -14,6 +15,13 @@ class TestFileStorage(unittest.TestCase):
         self.obj_2 = FileStorage()
         self.base_1 = BaseModel()
 
+    def tearDown(self):
+        """ Remove file.json after testing"""
+        try:
+            os.remove("file.json")
+        except Exception as e:
+            pass
+
     def test_FileStorage_attributes(self):
         """Tests for present attributes"""
         self.assertTrue(hasattr(self.obj_1, '_FileStorage__objects'))
@@ -21,7 +29,25 @@ class TestFileStorage(unittest.TestCase):
 
     def test_save_method(self):
         """Tests for the save() method"""
-        self.base_1.save()
-        file_dict = self.obj_1
-        for key in _file_dict__objects.keys():
-            self.assertIsInstance(_file_dict__objects[key], self.base_1.__class__.__name__)
+
+        # Check that our file (file.json) is not in path before calling save()
+        self.assertFalse(os.path.exists("file.json"))
+
+        # Call save() on object to  trigger the serialization
+        # and file writing processes
+        self.obj_1.save()
+
+        # Check that "file.json" now exists
+        self.assertTrue(os.path.exists("file.json"))
+
+    def test_new_method(self):
+        """Tests the behaviour of the new() method"""
+        new_obj = self.base_1
+        self.obj_1.new(new_obj)
+
+        # Check that new_obj class name and id are in __objects as key
+        self.assertIn(f"{new_obj.__class__.__name__}.{new_obj.id}",
+                      FileStorage._FileStorage__objects.keys())
+
+        # Check that 'new_obj' is a value in __objects
+        self.assertIn(new_obj, FileStorage._FileStorage__objects.values())

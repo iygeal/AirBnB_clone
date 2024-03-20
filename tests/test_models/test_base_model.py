@@ -29,7 +29,8 @@ class TestBaseModel(unittest.TestCase):
         """Tests BaseModel with custom attributes"""
         self.base_1.number = 38000000000
         self.base_1.money = "Thirty Eight Billion Dollars"
-        self.assertCountEqual(self.base_1.money, 'Thirty Eight Billion Dollars')
+        self.assertCountEqual(
+            self.base_1.money, 'Thirty Eight Billion Dollars')
         self.assertEqual(self.base_1.number, 38000000000)
 
     def test_attribute_types(self):
@@ -82,3 +83,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('id', base_5.__dict__)
         self.assertIn('created_at', base_5.__dict__)
         self.assertIn('updated_at', base_5.__dict__)
+
+
+if __name__ == "__main__":
+    unittest.main()

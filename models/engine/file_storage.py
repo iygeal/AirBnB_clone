@@ -28,8 +28,13 @@ class FileStorage:
 		for key, value in FileStorage.__objects.items():
 			obj_dict[key] = value.to_dict()
 
+        # Convert the dictionary to a JSON string using json.dumps
 		json_str = json.dumps(obj_dict)
+
+        # Open the file in write mode with UTF-8 encoding
 		with open(FileStorage.__file_path, 'w', encoding='utf-8') as f:
+
+            # Write the JSON string to the file
 			f.write(json_str)
 
 	def reload(self):
