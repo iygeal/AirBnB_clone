@@ -44,12 +44,8 @@ class TestFileStorage(unittest.TestCase):
 
         with open(FileStorage._FileStorage__file_path, 'r', encoding="utf-8") as file:
             contents = json.loads(file.read())
-            for value in FileStorage._FileStorage__objects.values():
-
-
-
-
-
+            for key in FileStorage._FileStorage__objects.keys():
+                self.assertEquals(dict(FileStorage._FilStorage__objects[key]), contents[key])
 
     def test_new_method(self):
         """Tests the behaviour of the new() method"""
