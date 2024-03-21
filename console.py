@@ -48,17 +48,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif name_and_id.split()[0] not in globals().keys():
             print("** class doesn't exist **")
-        elif name_and_id:
-            try:
-                class_name, class_id = name_and_id.split()
-            except ValueError:
-                print("** instance id missing **")
-        else:
+        elif len(name_and_id.split()) == 2:
+            class_name, class_id = name_and_id.split()
+
             if f"{class_name}.{class_id}" in storage._FileStorage__objects:
                 print(
                     storage._FileStorage__objects[f"{class_name}.{class_id}"])
             else:
                 print("** no instance found **")
+        else:
+            print("** instance id missing **")
+
 
 
 if __name__ == '__main__':
