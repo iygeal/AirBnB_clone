@@ -3,6 +3,8 @@
 
 import cmd
 from models.base_model import BaseModel
+from models import storage
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -42,21 +44,21 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, name_and_id):
         """Prints the string representation of an instance based on the class name and id"""
 
-
         if name_and_id == "":
             print("** class name missing **")
+        elif name_and_id.split()[0] not in globals().keys():
+            print("** class doesn't exist **")
         elif name_and_id:
             try:
-                class_name, class_name = name_and_id.split()
+                class_name, class_id = name_and_id.split()
             except ValueError:
                 print("** instance id missing **")
         else:
-            try:
-                obj = globals()[class_name]()
-                obj.save()
-                print(obj.id)
-            except KeyError:
-                print("** class doesn't exist **")
+            if f"{class_name}.{class_id}" in storage._FileStorage__objects:
+                print(
+                    storage._FileStorage__objects[f"{class_name}.{class_id}"])
+            else:
+                print("** no instance found **")
 
 
 if __name__ == '__main__':
