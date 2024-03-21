@@ -79,21 +79,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Prints string representations of all available objects"""
-        obj_list = []
+
+        saved = storage.all()
         class_list = []
-        for key in storage.all().keys():
-            class_list.append(key.split(".")[0])
-        if line != "":
-            if line not in class_list:
-                print("** class doesn't exist **")
-            else:
-                print(str(class_list))
+        obj_list = []
+
+        # Extract class names from saved keys
+        for key in saved.keys():
+            class_name = key.split(".")[0]
+            class_list.append(class_name)
+
+        if not line:
+            # Print string representation of all available instances
+            for obj in saved.values():
+                obj_list.append(str(obj))
+            print(obj_list)
 
         else:
-            saved = storage.all()
-            for objs in saved.values():
-                obj_list.append(str(objs))
-                print(objs)
+            # If line is not empty, check if specified class exists
+            if line in class_list:
+                # Print string rep of instances of the specified class
+                for obj in saved.values():
+                    if obj.__class__.__name__ == line:
+                        obj_list.append(str(obj))
+                print(obj_list)
+            else:
+                # If line is not in our class list, print error message
+                print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
