@@ -2,10 +2,15 @@
 """Module that defines the command interpreter"""
 
 import cmd
-from models.base_model import BaseModel
+import re
 from models import storage
-import json
+from models.base_model import BaseModel
 from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,6 +18,23 @@ class HBNBCommand(cmd.Cmd):
 
     # Custom promt
     prompt = "(hbnb) "
+
+    def parseline(self, line):
+
+        match = re.search(r'\.show\("([^\']*)"\)', line)
+        if "all()" in line:
+            class_name = line.split(".")[0]
+            ret = ('all', class_name, f'all {class_name}')
+        elif "count()" in line:
+            class_name = line.split(".")[0]
+            ret = ("count", class_name, f"count {class_name}")
+        elif match:
+            class_name = line.split(".")[0]
+            ret = ('show', f"{class_name} {match.group(1)}", f" show {class_name} {match.group(1)}")
+        else:
+            ret = cmd.Cmd.parseline(self, line)
+        return ret
+
 
     def do_quit(self, line):
         """Quit command which exits the program"""
@@ -147,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         attr_name = args[2]
-        attr_value = " ".join(args[3:])
+        attr_value = args[3]
 
 
         # Warn user not to update non-simple attributes
@@ -159,17 +181,45 @@ class HBNBCommand(cmd.Cmd):
         obj = storage._FileStorage__objects[obj_key]
 
         # Try to evaluate the value the user provided for attribute
+        attr_value = eval(attr_value)
+        """
         try:
             attr_value = eval(attr_value)
         except Exception as e:
             print("** value missing **")
             return
+        """
 
         # Set the provided attribute value for the object
         setattr(obj, attr_name, attr_value)
 
         # Save the updated object to the storage
         storage.save()
+
+    def do_count(self, class_name):
+        """Counts The number instances of a particular class"""
+
+        saved = storage.all()
+        class_list = []
+
+        # Extract class names from saved keys
+        for key in saved.keys():
+            class_name = key.split(".")[0]
+            class_list.append(class_name)
+
+
+        count = 0
+        # Check if specified class exists
+        if class_name in class_list:
+            # Print string rep of instances of the specified class
+            for key in saved.keys():
+                if class_name in key:
+                    count += 1
+            print(count)
+        else:
+            # If class is not in our class list, print error message
+            print("** class doesn't exist **")
+
 
 
 if __name__ == '__main__':

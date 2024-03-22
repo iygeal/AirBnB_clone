@@ -2,6 +2,12 @@
 """A class to store dict representation of an object in a json file"""
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 
 
 class FileStorage:
@@ -40,7 +46,8 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as jf:
                 dict_obj = json.loads(jf.read())
                 for key, value in dict_obj.items():
-                    obj = BaseModel(**dict_obj[key])
+                    class_name = key.split(".")[0]
+                    obj = globals()[class_name](**dict_obj[key])
                     FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass
