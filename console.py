@@ -42,7 +42,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_show(self, name_and_id):
-        """Prints the string representation of an instance based on the class name and id"""
+        """Prints the string representation of an instance
+           based on the class name and id
+        """
 
         if name_and_id == "":
             print("** class name missing **")
@@ -106,6 +108,60 @@ class HBNBCommand(cmd.Cmd):
             else:
                 # If line is not in our class list, print error message
                 print("** class doesn't exist **")
+
+    def do_update(self, line):
+        """Updates an instance based on the class name and id
+           by adding or updating the attributes
+        """
+
+        args = line.split()
+
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+
+        if class_name not in globals().keys():
+            print("** class doesn't exist **")
+            return
+
+        if len(args) == 1:
+            print("** instance id missing **")
+            return
+
+        obj_id = args[1]
+        obj_key = f"{class_name}.{obj_id}"
+
+        if obj_key not in storage._FileStorage__objects:
+            print("** no instance found **")
+            return
+
+        if len(args) == 2:
+            print("** attribute name missing **")
+            return
+
+        if len(args) == 3:
+            print("** value missing **")
+            return
+
+        attr_name = args[2]
+        attr_value = " ".join(args[3:])
+
+        if attr_name in ["id", "created_at", "updated_at"]:
+            print(" can't update id, created_at, or updated_at")
+            return
+
+        obj = storage._FileStorage__objects[obj_key]
+        try:
+            attr_value = eval(attr_value)
+        except Exception as e:
+            print("** value missing **")
+            return
+
+        setattr(obj, attr_name, attr_value)
+
+        storage.save()
 
 
 if __name__ == '__main__':
