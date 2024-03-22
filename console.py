@@ -148,19 +148,26 @@ class HBNBCommand(cmd.Cmd):
         attr_name = args[2]
         attr_value = " ".join(args[3:])
 
+
+        # Warn user not to update non-simple attributes
         if attr_name in ["id", "created_at", "updated_at"]:
             print(" can't update id, created_at, or updated_at")
             return
 
+        # If everything is fine, get the object from storage
         obj = storage._FileStorage__objects[obj_key]
+
+        # Try to evaluate the value the user provided for attribute
         try:
             attr_value = eval(attr_value)
         except Exception as e:
             print("** value missing **")
             return
 
+        # Set the provided attribute value for the object
         setattr(obj, attr_name, attr_value)
 
+        # Save the updated object to the storage
         storage.save()
 
 
