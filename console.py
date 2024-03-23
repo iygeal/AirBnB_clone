@@ -40,8 +40,10 @@ class HBNBCommand(cmd.Cmd):
         elif match1:
             class_name = line.split(".")[0]
             ret = (match1.group(1),
-                   f"{class_name} {match1.group(2)} {match1.group(3)} {match1.group(4)}",
-                   f"{match1.group(1)} {class_name} {match1.group(2)} {match1.group(3)} {match1.group(4)}"
+                   f"{class_name} {match1.group(2)} {match1.group(3)}"
+                   f" {match1.group(4)}",
+                   f"{match1.group(1)} {class_name} {match1.group(2)}"
+                   f" {match1.group(3)} {match1.group(4)}"
                    )
         elif match2:
             class_name = line.split(".")[0]
