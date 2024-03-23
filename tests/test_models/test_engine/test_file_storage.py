@@ -78,3 +78,7 @@ class TestFileStorage(unittest.TestCase):
         """Test the behaviour of all() method"""
         objects = self.obj_1.all()
         self.assertEqual(objects, FileStorage._FileStorage__objects)
+
+
+if __name__ == "__main__":
+    unittest.main()
