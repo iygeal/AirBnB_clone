@@ -22,17 +22,25 @@ class HBNBCommand(cmd.Cmd):
     def parseline(self, line):
         """The parseline method"""
 
-        match = re.search(r'\.(show|all|count|destroy)\("([^\']*)"\)', line)
+        match0 = re.search(r'\.(show|all|count|destroy)\("([^\']*)"\)', line)
+        pattern = r'\w+\.(update)\(\s*"([^\']*)",\s*"([^\']*)",\s*("[^\']*")\s*\)'
+        match1 = re.search(pattern, line)
         if "all()" in line:
             class_name = line.split(".")[0]
             ret = ('all', class_name, f'all {class_name}')
         elif "count()" in line:
             class_name = line.split(".")[0]
             ret = ("count", class_name, f"count {class_name}")
-        elif match:
+        elif match0:
             class_name = line.split(".")[0]
-            ret = (match.group(1), f"{class_name} {match.group(2)}",
-                   f"{match.group(1)} {class_name} {match.group(2)}")
+            ret = (match0.group(1), f"{class_name} {match0.group(2)}",
+                   f"{match0.group(1)} {class_name} {match0.group(2)}")
+        elif match1:
+            class_name = line.split(".")[0]
+            ret = (match1.group(1),
+                   f"{class_name} {match1.group(2)} {match1.group(3)} {match1.group(4)}",
+                   f"{match1.group(1)} {class_name} {match1.group(2)} {match1.group(3)} {match1.group(4)}"
+                   )
         else:
             ret = cmd.Cmd.parseline(self, line)
         return ret
