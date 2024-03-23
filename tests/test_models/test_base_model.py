@@ -77,7 +77,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(test_dict, base_4.to_dict())
 
     def test_empty_keyworded_args(self):
-        """Tests if empty dictionary is passed to kwargs"""
+        """Tests if an empty dictionary is passed to kwargs"""
         empty_dict = {}
         base_5 = BaseModel(**empty_dict)
         self.assertIn('id', base_5.__dict__)
