@@ -140,7 +140,10 @@ class HBNBCommand(cmd.Cmd):
 
         args = line.split()
 
-        if len(args) == 0:
+        # Process only the first 4 arguments
+        args = args[:4]
+
+        if len(args) < 1:
             print("** class name missing **")
             return
 
@@ -150,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        if len(args) == 1:
+        if len(args) < 2:
             print("** instance id missing **")
             return
 
@@ -161,11 +164,11 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
 
-        if len(args) == 2:
+        if len(args) < 3:
             print("** attribute name missing **")
             return
 
-        if len(args) == 3:
+        if len(args) < 4:
             print("** value missing **")
             return
 
@@ -182,13 +185,12 @@ class HBNBCommand(cmd.Cmd):
 
         # Try to evaluate the value the user provided for attribute
         attr_value = eval(attr_value)
-        """
-        try:
-            attr_value = eval(attr_value)
-        except Exception as e:
-            print("** value missing **")
-            return
-        """
+
+        # try:
+        #     attr_value = eval(attr_value)
+        # except Exception as e:
+        #     print("** value missing **")
+        #     return
 
         # Set the provided attribute value for the object
         setattr(obj, attr_name, attr_value)
