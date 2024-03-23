@@ -23,8 +23,10 @@ class HBNBCommand(cmd.Cmd):
         """The parseline method"""
 
         match0 = re.search(r'\.(show|all|count|destroy)\("([^\']*)"\)', line)
-        pattern = r'\w+\.(update)\(\s*"([^\']*)",\s*"([^\']*)",\s*("[^\']*")\s*\)'
-        match1 = re.search(pattern, line)
+        pattern1 = r'\w+\.(update)\(\s*"([^\']*)",\s*"([^\']*)",\s*("[^\']*")\s*\)'
+        match1 = re.search(pattern1, line)
+        pattern2 = r'\w+\.update\([\'"]([^\']*)[\'"],\s*({.*?})\)'
+        match2 = re.search(pattern2, line)
         if "all()" in line:
             class_name = line.split(".")[0]
             ret = ('all', class_name, f'all {class_name}')
@@ -40,6 +42,12 @@ class HBNBCommand(cmd.Cmd):
             ret = (match1.group(1),
                    f"{class_name} {match1.group(2)} {match1.group(3)} {match1.group(4)}",
                    f"{match1.group(1)} {class_name} {match1.group(2)} {match1.group(3)} {match1.group(4)}"
+                   )
+        elif match2:
+            class_name = line.split(".")[0]
+            ret = ('update_with_dict',
+                   f"{class_name} {match2.group(1)} {match2.group(2)}",
+                   f"update_with_dict {class_name} {match2.group(1)} {match2.group(2)}"
                    )
         else:
             ret = cmd.Cmd.parseline(self, line)
@@ -231,27 +239,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update_with_dict(self, line):
         """Updates an instance based on the class name and id with a dictionary representation"""
-        # Check if the input is in the correct format
-        match = re.match(r'(\w+)\.update\("([^"]+)", ({.*})\)', line)
-        if not match:
-            print(
-                "Invalid input format. Usage: <class name>.update(<id>, <dictionary representation>)")
-            return
 
-        class_name, obj_id, update_dict_str = match.groups()
-
-        # Convert the dictionary representation string to a Python dictionary
-        try:
-            update_dict = eval(update_dict_str)
-        except Exception as e:
-            print("Error parsing dictionary representation:", e)
-            return
-
-        # Call do_update() with the appropriate parameters
-        update_line = f"{class_name} {obj_id}"
-        for key, value in update_dict.items():
-            update_line += f" {key} {value}"
-        self.do_update(update_line)
+        class_name, class_id = line.split()[:2]
+        attr_dict = " ".join(line.split()[2:])
+        attr_dict = eval(attr_dict)
+        for key, value in attr_dict.items():
+            self.do_update(f'{class_name} {class_id} {key} "{value}"')
 
 
 if __name__ == '__main__':
