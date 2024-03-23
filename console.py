@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
         """The parseline method"""
 
         match0 = re.search(r'\.(show|all|count|destroy)\("([^\']*)"\)', line)
-        pattern1 = r'\w+\.(update)\(\s*"([^\']*)",\s*"([^\']*)",\s*("[^\']*")\s*\)'
+        pattern1 = r'\w+\.(update)\("([^\']*)",\s*"([^\']*)",\s*("[^\']*")\)'
         match1 = re.search(pattern1, line)
         pattern2 = r'\w+\.update\([\'"]([^\']*)[\'"],\s*({.*?})\)'
         match2 = re.search(pattern2, line)
