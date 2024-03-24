@@ -17,6 +17,8 @@ class TestFileStorage(unittest.TestCase):
         """Instances for test methods"""
         self.obj_1 = FileStorage()
         self.obj_2 = FileStorage()
+        self.base_1 = BaseModel()
+        self.base_2 = BaseModel()
 
     def tearDown(self):
         """ Remove file.json after testing"""
@@ -51,10 +53,9 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new_method(self):
         """Tests the behaviour of the new() method"""
-
-        new_obj = BaseModel()
+        new_obj = self.base_1
         self.obj_1.new(new_obj)
-        new_obj_2 = BaseModel()
+        new_obj_2 = self.base_2
         self.obj_2.new(new_obj_2)
 
         # Check that new_obj class name and id are in __objects as key
@@ -87,6 +88,11 @@ class TestFileStorage(unittest.TestCase):
             pass
         with self.assertRaises(Exception):
             storage.reload()
+
+    # def test_FileStorage_no_file(self):
+    #     """Test that FileStorage instantiation does not create a file"""
+    #     my_store = FileStorage()
+    #     self.assertFalse(os.path.exists(FileStorage._FileStorage__file_path))
 
 
 if __name__ == "__main__":
