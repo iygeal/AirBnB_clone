@@ -6,6 +6,8 @@ from models import storage
 import unittest
 import os
 import json
+from models.user import User
+from models.place import Place
 
 
 class TestFileStorage(unittest.TestCase):
@@ -78,6 +80,11 @@ class TestFileStorage(unittest.TestCase):
         """Test the behaviour of all() method"""
         objects = self.obj_1.all()
         self.assertEqual(objects, FileStorage._FileStorage__objects)
+
+    # NEW TEST CASES
+    def test_reload_emppty(self):
+        """ Checks for empty reload """
+        self.assertEqual(storage.reload(), None)
 
 
 if __name__ == "__main__":
