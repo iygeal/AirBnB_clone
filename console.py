@@ -49,7 +49,8 @@ class HBNBCommand(cmd.Cmd):
             class_name = line.split(".")[0]
             ret = ('update_with_dict',
                    f"{class_name} {match2.group(1)} {match2.group(2)}",
-                   f"update_with_dict {class_name} {match2.group(1)} {match2.group(2)}"
+                   f"update_with_dict {class_name} {match2.group(1)}"
+                   f" {match2.group(2)}"
                    )
         else:
             ret = cmd.Cmd.parseline(self, line)
@@ -204,12 +205,6 @@ class HBNBCommand(cmd.Cmd):
         # Try to evaluate the value the user provided for attribute
         attr_value = eval(attr_value)
 
-        # try:
-        #     attr_value = eval(attr_value)
-        # except Exception as e:
-        #     print("** value missing **")
-        #     return
-
         # Set the provided attribute value for the object
         setattr(obj, attr_name, attr_value)
 
@@ -240,7 +235,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_update_with_dict(self, line):
-        """Updates an instance based on the class name and id with a dictionary representation"""
+        """Updates an instance based on the class name
+           and id with a dictionary representation
+        """
 
         class_name, class_id = line.split()[:2]
         attr_dict = " ".join(line.split()[2:])
