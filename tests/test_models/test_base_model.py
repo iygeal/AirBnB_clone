@@ -45,8 +45,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_str_visualization(self):
         """Tests if __str__() correctly visualizes BaseModel"""
-        expected_view = f"[BaseModel] ({self.base_1.id}) {self.base_1.__dict__}"
-        self.assertEqual(expected_view, str(self.base_1))
+        view = f"[BaseModel] ({self.base_1.id}) {self.base_1.__dict__}"
+        self.assertEqual(view, str(self.base_1))
 
     def test_save_method(self):
         """Tests if save() updates updated_at"""
@@ -77,7 +77,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(test_dict, base_4.to_dict())
 
     def test_empty_keyworded_args(self):
-        """Tests if an empty dictionary is passed to kwargs"""
+        """Tests if an empty dict is passed to kwargs"""
         empty_dict = {}
         base_5 = BaseModel(**empty_dict)
         self.assertIn('id', base_5.__dict__)
