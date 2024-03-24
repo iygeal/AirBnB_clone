@@ -82,9 +82,11 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(objects, FileStorage._FileStorage__objects)
 
     # NEW TEST CASES
-    def test_reload_emppty(self):
-        """ Checks for empty reload """
-        self.assertEqual(storage.reload(), None)
+    def test_base_model_save(self):
+        """ BaseModel save method calls storage save """
+        new = BaseModel()
+        new.save()
+        self.assertTrue(os.path.exists("file.json"))
 
 
 if __name__ == "__main__":
