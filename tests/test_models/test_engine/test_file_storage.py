@@ -82,6 +82,12 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(objects, FileStorage._FileStorage__objects)
 
     # NEW TEST CASES
+    def test_reload_empty_file(self):
+        """ Load from an empty file """
+        with open("file.json", "w") as f:
+            pass
+        with self.assertRaises(Exception):
+            storage.reload()
 
 
 if __name__ == "__main__":

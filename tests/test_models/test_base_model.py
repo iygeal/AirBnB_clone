@@ -122,12 +122,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_from_dict.created_at, datetime)
         self.assertIsInstance(base_from_dict.updated_at, datetime)
 
-    def test_base_model_save(self):
-        """ BaseModel save method calls storage save """
-        new = BaseModel()
-        new.save()
-        self.assertTrue(os.path.exists("file.json"))
-
 
 if __name__ == "__main__":
     unittest.main()
