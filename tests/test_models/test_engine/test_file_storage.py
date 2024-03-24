@@ -42,7 +42,7 @@ class TestFileStorage(unittest.TestCase):
         # and file writing processes
         self.obj_1.save()
 
-        # Check that "file.json" now exists
+        # Check that "file.json" now exists in path
         self.assertTrue(os.path.exists(FileStorage._FileStorage__file_path))
 
         with open(FileStorage._FileStorage__file_path, 'r', encoding="utf-8") as file:
@@ -89,13 +89,14 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(Exception):
             storage.reload()
 
-    def test_empty(self):
-        """ Data is saved to file """
-        new = BaseModel()
-        thing = new.to_dict()
-        new.save()
-        new2 = BaseModel(**thing)
-        self.assertNotEqual(os.path.getsize("file.json"), 0)
+    def test_reload_when_file_empty(self):
+        """ Test for reloading an empty file"""
+        with open("file.json", "w") as jfile:
+            pass  # Write an empty file
+        storage.reload()  # Call reload without raising exceptions
+
+        # No assertions needed here as we don't expect exceptions
+
 
 
 if __name__ == "__main__":
