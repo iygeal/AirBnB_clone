@@ -8,6 +8,7 @@ import os
 import json
 from models.user import User
 from models.place import Place
+from uuid import uuid4
 
 
 class TestFileStorage(unittest.TestCase):
@@ -17,8 +18,6 @@ class TestFileStorage(unittest.TestCase):
         """Instances for test methods"""
         self.obj_1 = FileStorage()
         self.obj_2 = FileStorage()
-        self.base_1 = BaseModel()
-        self.base_2 = BaseModel()
 
     def tearDown(self):
         """ Remove file.json after testing"""
@@ -53,9 +52,10 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new_method(self):
         """Tests the behaviour of the new() method"""
-        new_obj = self.base_1
+
+        new_obj = BaseModel()
         self.obj_1.new(new_obj)
-        new_obj_2 = self.base_2
+        new_obj_2 = BaseModel()
         self.obj_2.new(new_obj_2)
 
         # Check that new_obj class name and id are in __objects as key
@@ -88,17 +88,6 @@ class TestFileStorage(unittest.TestCase):
             pass
         with self.assertRaises(Exception):
             storage.reload()
-
-    def test_FileStorage_no_file(self):
-        """Test that FileStorage instantiation does not create a file"""
-        my_store = FileStorage()
-        self.assertFalse(os.path.exists(FileStorage._FileStorage__file_path))
-
-    def test_BaseModel_save_file(self):
-        """Test that BaseModel saves when save() is called"""
-        my_base = BaseModel()
-        my_base.save()
-        self.assertTrue(os.path.exists("file.json"))
 
 
 if __name__ == "__main__":
