@@ -8,7 +8,6 @@ import os
 import json
 from models.user import User
 from models.place import Place
-from uuid import uuid4
 
 
 class TestFileStorage(unittest.TestCase):
