@@ -89,13 +89,11 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(Exception):
             storage.reload()
 
-    def test_reload_when_file_empty(self):
-        """ Test for reloading an empty file"""
-        with open("file.json", "w") as jfile:
-            pass  # Write an empty file
-        storage.reload()  # Call reload without raising exceptions
 
-        # No assertions needed here as we don't expect exceptions
+    def test_file_storage_instantiation(self):
+        """Test that FileStorage instantiation does not create a file"""
+        my_store = FileStorage()
+        self.assertFalse(os.path.exists(FileStorage._FileStorage__file_path))
 
 
 
