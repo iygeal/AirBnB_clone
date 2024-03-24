@@ -84,6 +84,44 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('created_at', base_5.__dict__)
         self.assertIn('updated_at', base_5.__dict__)
 
+    # ADDITIONAL TEST CASES
+    def test_custom_attributes_to_dict(self):
+        """Tests to_dict method with custom attributes"""
+
+        # Add custom attributes
+        self.base_1.number = 38000000000
+        self.base_1.money = "Thirty Eight Billion Dollars"
+
+        # Check if custom attributes are included in to_dict()
+        base_dict = self.base_1.to_dict()
+        self.assertIn('number', base_dict)
+        self.assertIn('money', base_dict)
+        self.assertEqual(base_dict['number'], 38000000000)
+        self.assertEqual(base_dict['money'], 'Thirty Eight Billion Dollars')
+
+    def test_save_method_with_to_dict(self):
+        """Tests if save() updates updated_at with object created from to_dict()"""
+
+        # Create an object from to_dict()
+        base_from_dict = BaseModel(**self.base_1.to_dict())
+
+        # Save the object and check if updated_at is updated
+        base_from_dict.save()
+        self.assertNotEqual(self.base_1.updated_at, base_from_dict.updated_at)
+
+    def test_datetime_conversion(self):
+        """Tests converting created_at and updated_at back to datetime objects"""
+
+        # Convert created_at and updated_at from string to datetime
+        base_dict = self.base_1.to_dict()
+
+        # Create an object from the modified dictionary
+        base_from_dict = BaseModel(**base_dict)
+
+        # Check if created_at and updated_at are datetime objects
+        self.assertIsInstance(base_from_dict.created_at, datetime)
+        self.assertIsInstance(base_from_dict.updated_at, datetime)
+
 
 if __name__ == "__main__":
     unittest.main()
