@@ -89,12 +89,16 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(Exception):
             storage.reload()
 
-
-    def test_file_storage_instantiation(self):
+    def test_FileStorage_no_file(self):
         """Test that FileStorage instantiation does not create a file"""
         my_store = FileStorage()
         self.assertFalse(os.path.exists(FileStorage._FileStorage__file_path))
 
+    def test_BaseModel_save_file(self):
+        """Test that BaseModel saves when save() is called"""
+        my_base = BaseModel()
+        my_base.save()
+        self.assertTrue(os.path.exists("file.json"))
 
 
 if __name__ == "__main__":
