@@ -89,10 +89,12 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(Exception):
             storage.reload()
 
-    # def test_FileStorage_no_file(self):
-    #     """Test that FileStorage instantiation does not create a file"""
-    #     my_store = FileStorage()
-    #     self.assertFalse(os.path.exists(FileStorage._FileStorage__file_path))
+    def test_save_method_on_FileStorage(self):
+        """Tests that save() method saves a FileStorage instance"""
+        my_store = FileStorage()
+        self.assertFalse(os.path.exists(FileStorage._FileStorage__file_path))
+        my_store.save()
+        self.assertTrue(os.path.exists(FileStorage._FileStorage__file_path))
 
 
 if __name__ == "__main__":
