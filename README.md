@@ -79,6 +79,17 @@ AirBnB_clone/
 │       └── file_storage.py
 │
 ├── tests/
+│   ├── test_console.py
+│   ├── test_models/
+│   │   ├── test_base_model.py
+│   │   ├── test_user.py
+│   │   ├── test_state.py
+│   │   ├── test_city.py
+│   │   ├── test_amenity.py
+│   │   ├── test_place.py
+│   │   └── test_review.py
+│   └── test_engine/
+│       └── test_file_storage.py
 ├── README.md
 └── AUTHORS
 ```
